@@ -21,4 +21,13 @@ zArray = yArray.*nArray;    % earnings
 
 % Display results
 table = [xArray zArray FArray]
-plot(nArray,[xArray zArray])
+plot(nArray,[xArray zArray]);
+legend('Consumption (x)','Earnings (z)','Location','NorthWest');
+xlabel('Skill (n)');
+
+pause;
+tArray = zArray - xArray;
+plot(zArray,tArray);
+xlabel('Earnings (z)');
+ylabel('Taxes paid (z-x)');
+axis([0; 1; min(tArray); 1.1*max(tArray)]);
