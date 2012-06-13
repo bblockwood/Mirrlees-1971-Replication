@@ -1,7 +1,7 @@
 function [target,xArray,yArray,nArray,FArray] = solve(p)
 
 n0 = p(1);
-LAMBDA = p(2);
+lambda = p(2);
 
 global AVGPROD;
 
@@ -26,13 +26,13 @@ ux = @(x) 1/x;
 % System of differential equations
 x = @(u,y) exp(u - log(1-y));
 v = @(u,y,n) (1-y)*(1-y-x(u,y)/n);
-dvdn = @(u,y,n) v(u,y,n)*log(n)/n - x(u,y)/n^2 + LAMBDA/n^2;
+dvdn = @(u,y,n) v(u,y,n)*log(n)/n - x(u,y)/n^2 + lambda/n^2;
 dudn = @(y,n) y/(n*(1-y));
 
 % Solve for initial (u0,v0), with p = [u;v]
 nArray(1) = n0;
 yArray(1) = 0;                          % by definition
-vInit = @(u) F(n0)/(n0^2*f(n0))*(LAMBDA - 1/ux(x(u,0)));
+vInit = @(u) F(n0)/(n0^2*f(n0))*(lambda - 1/ux(x(u,0)));
 opts = optimset('display','none');
 p0 = [-2.5;0]; % starting guess
 
