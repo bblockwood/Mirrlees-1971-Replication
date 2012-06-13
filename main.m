@@ -7,15 +7,17 @@ clc;
 
 % Setup described in Section 8 (Case 1) and Section 9.
 global AVGPROD;
-AVGPROD = 0.93;             % set average productivity
+AVGPROD = 0.93;             % avg productivity target (caption of Table 1)
 
-% Find n0 that best satisfies equation (53)
+% Find the lambda and n0 that best satisfy equation (53) and the avg
+% productivity target
 opts = optimset('Display','iter');
 sol = fsolve(@(p) solve(p),[0.06;0.155],opts);
 
 n0 = sol(1);
 lambda = sol(2);
 
+% Store results
 [~,xArray,yArray,nArray,FArray] = solve(sol);
 zArray = yArray.*nArray;    % earnings
 
