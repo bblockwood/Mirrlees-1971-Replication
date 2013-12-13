@@ -1,4 +1,4 @@
-function [target,xArray,yArray,nArray,FArray] = solve(p)
+function [target,xArray,yArray,nArray,fArray,FArray] = solve(p)
 
 n0 = p(1);
 lambda = p(2);
@@ -12,8 +12,8 @@ f = @(n) lognpdf(n,mu,sd);
 F = @(n) logncdf(n,mu,sd);
 
 % Initialize arrays to store solution
-N = 150;
-nStep = 0.01;
+N = 2000;
+nStep = 0.001;
 nArray = zeros(N,1);
 uArray = zeros(N,1);                    % state variable
 yArray = zeros(N,1);                    % control variable
@@ -25,8 +25,9 @@ ux = @(x) 1/x;                                                  % see eq 97
 
 % System of differential equations; let beta=0, alpha=1
 x = @(u,y) exp(u - log(1-y));                                   % eq 97
-v = @(u,y,n) (1-y)*(1-y-x(u,y)/n);                              % eq 49
-dvdn = @(u,y,n) v(u,y,n)*log(n)/n - x(u,y)/n^2 + lambda/n^2;    % eq 50
+v = @(u,y,n) (1-y)*((1-y)*AVGPROD-x(u,y)/n);                    % eq 49
+dvdn = @(u,y,n) v(u,y,n)*((log(n)-mu)/sd^2-1)/n -...
+                                    x(u,y)/n^2 + lambda/n^2;    % eq 50
 dudn = @(y,n) y/(n*(1-y));                                      % eq 51
 
 % Solve for initial (u0,v0), with p = [u;v]
@@ -63,6 +64,7 @@ fArray = f(nArray);
 FArray = F(nArray);
 
 eq53 = vArray(N)*nArray(N)^2*f(nArray(N));                      % eq 53
-X = fArray'*xArray;
-Z = fArray'*(yArray.*nArray);
+X = fArray'*xArray*nStep + FArray(1)* xArray(1);
+Z = fArray'*(yArray.*nArray)*nStep;
 target = [eq53; X/Z - AVGPROD]; % should be [0; 0] at optimal (lambda, n0)
+end
