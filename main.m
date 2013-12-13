@@ -1,7 +1,7 @@
 % Ben Lockwood, benlockwood.com
 % This code replicates the results in Mirrlees (1971), "An Exploration in
 % the Theory of Optimum Income Taxation", ReStud 38(2).
-% Thanks to Pan Liu (http://www.econ.iastate.edu/people/graduate-students/liu-pan) for
+% Thanks to Pan Liu (www.econ.iastate.edu/people/graduate-students/liu-pan) for
 % valuable contributions.
 
 clear all;
@@ -12,7 +12,7 @@ global AVGPROD;
 
 % % Settings for Tables I and II
 % AVGPROD = 0.93;             % avg productivity target (caption of Table I)
-% startpt = [0.06;0.155];
+% startpt = [0.0487;.1941];   % note: start with small N, use resulting point, ratchet N
 
 % Settings for Tables III and IV
 AVGPROD = 1.1;             % caption of Table III
